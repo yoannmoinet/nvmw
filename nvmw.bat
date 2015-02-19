@@ -408,8 +408,8 @@ if %NVMW_CURRENT_TYPE% == iojs (
 set "PATH=%PATH_TO_SET%;%PATH_ORG%"
 set "NODE_PATH=%PATH_TO_SET%\node_modules"
 ::Set for all future sessions
-setx PATH "%PATH_TO_SET%;%PATH_ORG%" /M
-setx NODE_PATH "%PATH_TO_SET%\node_modules" /M
+setx PATH "%PATH_TO_SET%;%PATH_ORG%" /M>NUL
+setx NODE_PATH "%PATH_TO_SET%\node_modules" /M>NUL
 exit /b 0
 
 ::===========================================================

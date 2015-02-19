@@ -380,14 +380,36 @@ if not %NVMW_CURRENT_ARCH% == %OS_ARCH% (
   set NVMW_CURRENT_ARCH_PADDING=
 )
 
-if %NVMW_CURRENT_TYPE% == iojs (
-  set "PATH=%NVMW_HOME%;%NVMW_HOME%%NVMW_CURRENT_TYPE%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%;%PATH_ORG%"
-  set "NODE_PATH=%NVMW_HOME%%NVMW_CURRENT_TYPE%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%\node_modules"
-) else (
-  set "PATH=%NVMW_HOME%;%NVMW_HOME%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%;%PATH_ORG%"
-  set "NODE_PATH=%NVMW_HOME%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%\node_modules"
-)
+setlocal EnableDelayedExpansion
+::Changing special characters
+set LINE=%PATH_ORG%
+set LINE=%LINE: =#%
+set LINE=%LINE:(=@%
+set LINE=%LINE:)=$%
+set LINE=%LINE:;= %
+::Removing any path referencing '.nvmw'
+for %%a in (%LINE%) do echo %%a | find /i "nvmw_fork" || set NEWPATH=!NEWPATH!;%%a
+::Changing back special characters
+set NEWPATH=!NEWPATH:#= !
+set NEWPATH=!NEWPATH:@=(!
+set NEWPATH=!NEWPATH:$=)!
+::Setting back to PATH_ORG
+set PATH_ORG=!NEWPATH:~1!;
 
+set "PATH_IOJS=%NVMW_HOME%%NVMW_CURRENT_TYPE%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%"
+set "PATH_NODE=%NVMW_HOME%%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%"
+
+if %NVMW_CURRENT_TYPE% == iojs (
+  set "PATH_TO_SET=%NVMW_HOME%;%PATH_IOJS%"
+) else (
+  set "PATH_TO_SET=%NVMW_HOME%;%PATH_NODE%"
+)
+::Set for the current session
+set "PATH=%PATH_TO_SET%;%PATH_ORG%"
+set "NODE_PATH=%PATH_TO_SET%\node_modules"
+::Set for all future sessions
+setx PATH "%PATH_TO_SET%;%PATH_ORG%" /M
+setx NODE_PATH "%PATH_TO_SET%\node_modules" /M
 exit /b 0
 
 ::===========================================================

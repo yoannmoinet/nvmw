@@ -388,7 +388,7 @@ set LINE=%LINE:(=@%
 set LINE=%LINE:)=$%
 set LINE=%LINE:;= %
 ::Removing any path referencing '.nvmw'
-for %%a in (%LINE%) do echo %%a | find /i "nvmw_fork" || set NEWPATH=!NEWPATH!;%%a
+for %%a in (%LINE%) do echo %%a | find /i ".nvmw" || set NEWPATH=!NEWPATH!;%%a
 ::Changing back special characters
 set NEWPATH=!NEWPATH:#= !
 set NEWPATH=!NEWPATH:@=(!

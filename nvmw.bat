@@ -388,6 +388,7 @@ set LINE=%LINE:(=@%
 set LINE=%LINE:)=$%
 set LINE=%LINE:;= %
 ::Removing any path referencing '.nvmw'
+echo Removing from System Path :
 for %%a in (%LINE%) do echo %%a | find /i ".nvmw" || set NEWPATH=!NEWPATH!;%%a
 ::Changing back special characters
 set NEWPATH=!NEWPATH:#= !
@@ -409,6 +410,12 @@ if %NVMW_CURRENT_TYPE% == iojs (
 ::Set for all future sessions
 setx PATH "%PATH_TO_SET%;%PATH_ORG%" /M>NUL
 setx NODE_PATH "%NODE_PATH_TO_SET%" /M>NUL
+::Echo what we're setting back
+echo Adding to System Path :^
+
+!PATH_TO_SET:;=^
+
+!
 ::Set for the current session
 endlocal & set PATH=%PATH_TO_SET%;%PATH_ORG%  & set NODE_PATH=%NODE_PATH_TO_SET%
 exit /b 0

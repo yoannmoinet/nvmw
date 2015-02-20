@@ -396,20 +396,19 @@ set NEWPATH=!NEWPATH:$=)!
 ::Setting back to PATH_ORG
 set PATH_ORG=!NEWPATH:~1!;
 
-set "PATH_IOJS=%NVMW_HOME%%NVMW_CURRENT_TYPE%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%"
-set "PATH_NODE=%NVMW_HOME%%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%"
+set PATH_IOJS=%NVMW_HOME%%NVMW_CURRENT_TYPE%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%
+set PATH_NODE=%NVMW_HOME%%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%
 
 if %NVMW_CURRENT_TYPE% == iojs (
-  set "PATH_TO_SET=%NVMW_HOME%;%PATH_IOJS%"
+  set PATH_TO_SET=%NVMW_HOME%;%PATH_IOJS%
 ) else (
-  set "PATH_TO_SET=%NVMW_HOME%;%PATH_NODE%"
+  set PATH_TO_SET=%NVMW_HOME%;%PATH_NODE%
 )
-::Set for the current session
-set "PATH=%PATH_TO_SET%;%PATH_ORG%"
-set "NODE_PATH=%PATH_TO_SET%\node_modules"
 ::Set for all future sessions
 setx PATH "%PATH_TO_SET%;%PATH_ORG%" /M>NUL
 setx NODE_PATH "%PATH_TO_SET%\node_modules" /M>NUL
+::Set for the current session
+endlocal & set PATH=%PATH_TO_SET%;%PATH_ORG%  & set NODE_PATH=%NODE_PATH_TO_SET%
 exit /b 0
 
 ::===========================================================

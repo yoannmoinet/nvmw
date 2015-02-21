@@ -421,7 +421,7 @@ set LINE=%LINE:(=@%
 set LINE=%LINE:)=$%
 set LINE=%LINE:;= %
 ::Removing any path referencing '.nvmw'
-for %%a in (%LINE%) do echo %%a | find /i ".nvmw">NUL || set NEWPATH=!NEWPATH!;%%a
+for %%a in (%LINE%) do echo %%a | %windir%\system32\FIND.exe /i ".nvmw">NUL || set NEWPATH=!NEWPATH!;%%a
 ::If empty we return empty
 if [!NEWPATH!] == [] (
   set PATH_ORG=

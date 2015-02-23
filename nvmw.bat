@@ -184,6 +184,7 @@ if not exist "%NODE_EXE_FILE%" (
   rmdir /s /q "%NODE_HOME%\node_modules\npm"
   move npm-* "%NODE_HOME%\node_modules\npm"
   copy "%NODE_HOME%\node_modules\npm\bin\npm.cmd" "%NODE_HOME%\npm.cmd"
+  copy "%NODE_HOME%\node_modules\npm\bin\npm" "%NODE_HOME%\npm"
   cd "%CD_ORG%"
   if not exist "%NODE_HOME%\npm.cmd" goto install_error
   echo npm install ok

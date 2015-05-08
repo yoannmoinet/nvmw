@@ -17,9 +17,9 @@ Clone this repository:
 
     git clone git://github.com/hakobera/nvmw.git "%HOMEDRIVE%%HOMEPATH%\.nvmw"
 
-To activate nvmw, add nvmw directory to your PATH environment variable
+To activate nvmw, you have to use it from within its folder
 
-    set "PATH=%HOMEDRIVE%%HOMEPATH%\.nvmw;%PATH%"
+	cd "%HOMEDRIVE%%HOMEPATH%\.nvmw" & nvmw install node
 
 Usage
 -----

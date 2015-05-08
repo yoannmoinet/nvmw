@@ -380,15 +380,60 @@ if not %NVMW_CURRENT_ARCH% == %OS_ARCH% (
   set NVMW_CURRENT_ARCH_PADDING=
 )
 
+setlocal EnableDelayedExpansion
+::Set reference paths
+set PATH_IOJS=%NVMW_HOME%%NVMW_CURRENT_TYPE%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%
+set PATH_NODE=%NVMW_HOME%%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%
 if %NVMW_CURRENT_TYPE% == iojs (
-  set "PATH=%NVMW_HOME%;%NVMW_HOME%%NVMW_CURRENT_TYPE%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%;%PATH_ORG%"
-  set "NODE_PATH=%NVMW_HOME%%NVMW_CURRENT_TYPE%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%\node_modules"
+  set PATH_TO_SET=%NVMW_HOME%;%PATH_IOJS%
+  set NODE_PATH_TO_SET=%PATH_IOJS%\node_modules
 ) else (
-  set "PATH=%NVMW_HOME%;%NVMW_HOME%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%;%PATH_ORG%"
-  set "NODE_PATH=%NVMW_HOME%\%NVMW_CURRENT%%NVMW_CURRENT_ARCH_PADDING%\node_modules"
+  set PATH_TO_SET=%NVMW_HOME%;%PATH_NODE%
+  set NODE_PATH_TO_SET=%PATH_NODE%\node_modules
 )
-
+set PATH_ORG=
+::Check if PATH key exists in User Path and set it in PATH_ORG
+reg query HKCU\Environment /v PATH>NUL 2>NUL
+if %errorlevel% == 0 (
+  for /f "usebackq tokens=2,*" %%A in (`reg query HKCU\Environment /v PATH`) do set PATH_ORG=%%B
+)
+::Clean User Path
+set RETURN=setUserPath
+goto cleanPath
+:setUserPath
+::Set for all future sessions
+setx PATH "%PATH_TO_SET%;%PATH_ORG%">NUL
+setx NODE_PATH "%NODE_PATH_TO_SET%">NUL
+::Clean System Path
+set PATH_ORG=%PATH%
+set RETURN=setPath
+goto cleanPath
+:setPath
+::Set for the current session
+endlocal & set PATH=%PATH_TO_SET%;%PATH_ORG%& set NODE_PATH=%NODE_PATH_TO_SET%
 exit /b 0
+
+:cleanPath
+::Changing special characters
+set LINE=%PATH_ORG%
+set LINE=%LINE: =#%
+set LINE=%LINE:(=@%
+set LINE=%LINE:)=$%
+set LINE=%LINE:;= %
+::Removing any path referencing '.nvmw'
+for %%a in (%LINE%) do echo %%a | %windir%\system32\FIND.exe /i ".nvmw">NUL || set NEWPATH=!NEWPATH!;%%a
+::If empty we return empty
+if [!NEWPATH!] == [] (
+  set PATH_ORG=
+  goto %RETURN%
+)
+::Changing back special characters
+set NEWPATH=!NEWPATH:#= !
+set NEWPATH=!NEWPATH:@=(!
+set NEWPATH=!NEWPATH:$=)!
+::Setting back to PATH_ORG
+set PATH_ORG=!NEWPATH:~1!;
+goto %RETURN%
 
 ::===========================================================
 :: ls : List installed versions

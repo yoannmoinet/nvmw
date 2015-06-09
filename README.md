@@ -15,7 +15,7 @@ Installation
 
 Clone this repository:
 
-    git clone git://github.com/hakobera/nvmw.git "%HOMEDRIVE%%HOMEPATH%\.nvmw"
+    git clone git://github.com/yoannmoinet/nvmw.git "%HOMEDRIVE%%HOMEPATH%\.nvmw"
 
 To activate nvmw, you have to use it from within its folder
 

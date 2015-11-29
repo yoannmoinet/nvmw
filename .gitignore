@@ -2,3 +2,5 @@ v*/
 .idea/
 .DS_Store
 node_modules
+iojs
+latest

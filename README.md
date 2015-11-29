@@ -2,6 +2,11 @@ Node Version Manager for Windows
 ================================
 nvmw is a simple Node Version Manager for Windows.
 
+Differences with [hakobera's upstream](https://github.com/hakobera/nvmw)
+------------
+- Support NodeJS v4+.
+- Persist choice.
+
 Prerequisites
 -------------
 

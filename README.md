@@ -12,7 +12,7 @@ Prerequisites
 
 You'll need to install the following software before installing nvmw:
 
-- [git](http://msysgit.github.io/ "msysgit")
+- [git](https://git-for-windows.github.io/ "msysgit")
 - [python 2.7+](http://python.org/download/) only if you need Node < 0.8
 
 Installation

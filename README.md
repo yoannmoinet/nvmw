@@ -6,6 +6,7 @@ Differences with [hakobera's upstream](https://github.com/hakobera/nvmw)
 ------------
 - Support NodeJS v4+.
 - Persist choice.
+- Fix `node v*.*.* does not include npm` error.
 
 Prerequisites
 -------------

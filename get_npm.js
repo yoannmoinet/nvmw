@@ -3,7 +3,7 @@ var util = require('util'),
     path = require('path'),
     wget = require('./wget');
 
-var NPM_PKG_JSON_URL = 'https://raw.githubusercontent.com/%s/%s/deps/npm/package.json';
+var NPM_PKG_JSON_URL = 'https://raw.githubusercontent.com/nodejs/node/%s/deps/npm/package.json';
 // https://github.com/npm/npm/tags
 var NVMW_NPM_MIRROR = process.env.NVMW_NPM_MIRROR || 'https://github.com/npm/npm/archive';
 var BASE_URL = NVMW_NPM_MIRROR + '/v%s.zip';
@@ -12,6 +12,11 @@ var targetDir = process.argv[2];
 var versions = process.argv[3].split('/');
 var binType = versions[0];
 var binVersion = versions[1];
+var branchName = binVersion === 'latest' ? 'master' : binVersion;
+
+if (+binVersion.split('')[1] < 4) {
+  branchName += '-release';
+}
 
 if (binType === 'iojs') {
   // detect npm version from https://iojs.org/dist/index.json
@@ -41,8 +46,7 @@ if (binType === 'iojs') {
     downloadNpmZip(npmVersion);
   });
 } else {
-  var pkgUri = util.format(NPM_PKG_JSON_URL, 'joyent/node',
-    binVersion === 'latest' ? 'master' : binVersion);
+  var pkgUri = util.format(NPM_PKG_JSON_URL, branchName);
   wget(pkgUri, function (filename, pkg) {
     if (filename === null) {
       return noNpmAndExit();
